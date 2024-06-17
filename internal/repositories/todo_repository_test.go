@@ -2,6 +2,7 @@ package repositories_test
 
 import (
 	"context"
+	"strings"
 	"testing"
 	"time"
 
@@ -30,6 +31,7 @@ func setupInMemoryMongoDB(t *testing.T) (databases.Database, func()) {
 	_, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
+	//ephemeralForTest=true is used to create an in-memory MongoDB instance
 	client, err := mongo.Connect(options.Client().ApplyURI("mongodb://localhost:27017/?ephemeralForTest=true"))
 	if err != nil {
 		t.Fatalf("Failed to connect to in-memory MongoDB: %v", err)
@@ -49,6 +51,18 @@ func TestTodoRepository(t *testing.T) {
 	defer cleanup()
 
 	repo := repositories.NewTodoRepository(mockDB)
+
+	t.Run("CreateFail", func(t *testing.T) {
+		longTitle := strings.Repeat("a", 17*1024*1024) // 17MB string, exceeding MongoDB's 16MB document size limit
+		invalidTodo := &models.Todo{
+			Title:   longTitle,
+			Content: "Test Content",
+		}
+		err := repo.Create(invalidTodo)
+
+		assert.Error(t, err)
+		assert.Equal(t, "failed to create todo", err.Error())
+	})
 
 	t.Run("CreateAndGetById", func(t *testing.T) {
 		todo := &models.Todo{Title: "Test Todo", Content: "Test Content"}
@@ -79,7 +93,7 @@ func TestTodoRepository(t *testing.T) {
 	})
 
 	t.Run("Update", func(t *testing.T) {
-		todo := &models.Todo{Title: "Original Title", Content: "Original Content"}
+		todo := &models.Todo{Id: bson.NewObjectID(), Title: "Original Title", Content: "Original Content"}
 		repo.Create(todo)
 
 		updatedTodo := &models.Todo{Title: "Updated Title", Content: "Updated Content"}
@@ -92,8 +106,22 @@ func TestTodoRepository(t *testing.T) {
 		assert.Equal(t, "Updated Content", fetchedTodo.Content)
 	})
 
+	t.Run("UpdateFailed", func(t *testing.T) {
+		nonExistentID := bson.NewObjectID()
+
+		updatedTodo := &models.Todo{Title: "Updated Title", Content: "Updated Content"}
+		err := repo.Update(nonExistentID.Hex(), updatedTodo)
+
+		assert.Error(t, err)
+		assert.Contains(t, err.Error(), "not found", "Error should indicate that the todo was not found")
+
+		_, err = repo.GetById(nonExistentID.Hex())
+		assert.Error(t, err)
+		assert.Contains(t, err.Error(), "no documents", "GetById should also indicate that no documents")
+	})
+
 	t.Run("Delete", func(t *testing.T) {
-		todo := &models.Todo{Title: "To be deleted", Content: "Content"}
+		todo := &models.Todo{Id: bson.NewObjectID(), Title: "To be deleted", Content: "Content"}
 		repo.Create(todo)
 
 		err := repo.Delete(todo.Id.Hex())
