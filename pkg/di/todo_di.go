@@ -16,7 +16,7 @@ func BuildToDoContainer() *dig.Container {
 	container.Provide(databases.NewMongoDatabase)
 	container.Provide(repositories.NewTodoRepository)
 	container.Provide(services.NewTodoService)
-	container.Provide(handlers.NewTodoController)
+	container.Provide(handlers.NewTodoHandler)
 	container.Provide(routes.NewTodoRouter)
 
 	return container

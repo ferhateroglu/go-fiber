@@ -7,21 +7,21 @@ import (
 )
 
 type TodoRouter struct {
-	todoController *handlers.TodoController
+	todoHandler *handlers.TodoHandler
 }
 
-func NewTodoRouter(todoController *handlers.TodoController) *TodoRouter {
+func NewTodoRouter(todoHandler *handlers.TodoHandler) *TodoRouter {
 	return &TodoRouter{
-		todoController: todoController,
+		todoHandler: todoHandler,
 	}
 }
 
 func (tr *TodoRouter) SetupRoutes(app *fiber.App) {
 	todoGroup := app.Group("/api/todos")
 
-	todoGroup.Get("/", tr.todoController.GetAllTodos)
-	todoGroup.Post("/", middlewares.ValidateRequest(middlewares.TodoRequest{}), tr.todoController.CreateTodo)
-	todoGroup.Get("/:id", middlewares.ValidateRequest(middlewares.GetTodoRequest{}), tr.todoController.GetTodoById)
-	todoGroup.Put("/:id", middlewares.ValidateRequest(middlewares.UpdateTodoRequest{}), tr.todoController.UpdateTodo)
-	todoGroup.Delete("/:id", middlewares.ValidateRequest(middlewares.DeleteTodoRequest{}), tr.todoController.DeleteTodo)
+	todoGroup.Get("/", tr.todoHandler.GetAllTodos)
+	todoGroup.Post("/", middlewares.ValidateRequest(middlewares.TodoRequest{}), tr.todoHandler.CreateTodo)
+	todoGroup.Get("/:id", middlewares.ValidateRequest(middlewares.GetTodoRequest{}), tr.todoHandler.GetTodoById)
+	todoGroup.Put("/:id", middlewares.ValidateRequest(middlewares.UpdateTodoRequest{}), tr.todoHandler.UpdateTodo)
+	todoGroup.Delete("/:id", middlewares.ValidateRequest(middlewares.DeleteTodoRequest{}), tr.todoHandler.DeleteTodo)
 }
