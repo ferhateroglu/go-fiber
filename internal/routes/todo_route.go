@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"github.com/ferhateroglu/go-fiber/controllers"
-	"github.com/ferhateroglu/go-fiber/middlewares"
+	"github.com/ferhateroglu/go-fiber/internal/controllers"
+	"github.com/ferhateroglu/go-fiber/internal/middlewares"
 	"github.com/gofiber/fiber/v2"
 )
 

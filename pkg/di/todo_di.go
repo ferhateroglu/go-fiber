@@ -1,11 +1,11 @@
 package di
 
 import (
-	"github.com/ferhateroglu/go-fiber/controllers"
-	"github.com/ferhateroglu/go-fiber/databases"
-	"github.com/ferhateroglu/go-fiber/repositories"
-	"github.com/ferhateroglu/go-fiber/routes"
-	"github.com/ferhateroglu/go-fiber/services"
+	"github.com/ferhateroglu/go-fiber/internal/controllers"
+	"github.com/ferhateroglu/go-fiber/internal/repositories"
+	"github.com/ferhateroglu/go-fiber/internal/routes"
+	"github.com/ferhateroglu/go-fiber/internal/services"
+	"github.com/ferhateroglu/go-fiber/pkg/databases"
 	"go.uber.org/dig"
 )
 

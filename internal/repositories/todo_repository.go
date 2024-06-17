@@ -5,8 +5,8 @@ import (
 	"errors"
 	"time"
 
-	"github.com/ferhateroglu/go-fiber/databases"
-	"github.com/ferhateroglu/go-fiber/models"
+	"github.com/ferhateroglu/go-fiber/internal/models"
+	"github.com/ferhateroglu/go-fiber/pkg/databases"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/v2/bson"
 	"go.mongodb.org/mongo-driver/v2/mongo"
@@ -29,6 +29,7 @@ func NewMongoTodoRepository(mongoDatabase *databases.MongoDatabase) TodoReposito
 		collection: mongoDatabase.GetDatabase().Collection("todos"),
 	}
 }
+
 func (r *MongoTodoRepository) Create(todo *models.Todo) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()

@@ -3,8 +3,8 @@ package services
 import (
 	"errors"
 
-	"github.com/ferhateroglu/go-fiber/models"
-	"github.com/ferhateroglu/go-fiber/repositories"
+	"github.com/ferhateroglu/go-fiber/internal/models"
+	"github.com/ferhateroglu/go-fiber/internal/repositories"
 )
 
 type TodoService interface {

@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"github.com/ferhateroglu/go-fiber/models"
-	"github.com/ferhateroglu/go-fiber/services"
+	"github.com/ferhateroglu/go-fiber/internal/models"
+	"github.com/ferhateroglu/go-fiber/internal/services"
 	"github.com/gofiber/fiber/v2"
 )
 
