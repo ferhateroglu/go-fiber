@@ -7,7 +7,6 @@ import (
 
 	"github.com/ferhateroglu/go-fiber/internal/models"
 	"github.com/ferhateroglu/go-fiber/pkg/databases"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/v2/bson"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 )
@@ -66,7 +65,7 @@ func (r *mongoTodoRepository) GetById(id string) (*models.Todo, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	objectId, err := primitive.ObjectIDFromHex(id)
+	objectId, err := bson.ObjectIDFromHex(id)
 	if err != nil {
 		return nil, err
 	}
@@ -74,9 +73,6 @@ func (r *mongoTodoRepository) GetById(id string) (*models.Todo, error) {
 	var todo models.Todo
 	err = r.collection.FindOne(ctx, bson.M{"_id": objectId}).Decode(&todo)
 	if err != nil {
-		if err == mongo.ErrNoDocuments {
-			return nil, errors.New("todo not found")
-		}
 		return nil, err
 	}
 
@@ -87,7 +83,7 @@ func (r *mongoTodoRepository) Update(id string, todo *models.Todo) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	objectId, err := primitive.ObjectIDFromHex(id)
+	objectId, err := bson.ObjectIDFromHex(id)
 	if err != nil {
 		return err
 	}
@@ -115,7 +111,7 @@ func (r *mongoTodoRepository) Delete(id string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	objectId, err := primitive.ObjectIDFromHex(id)
+	objectId, err := bson.ObjectIDFromHex(id)
 	if err != nil {
 		return err
 	}
