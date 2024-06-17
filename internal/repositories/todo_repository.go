@@ -24,7 +24,7 @@ type MongoTodoRepository struct {
 	collection *mongo.Collection
 }
 
-func NewMongoTodoRepository(mongoDatabase *databases.MongoDatabase) TodoRepository {
+func NewTodoRepository(mongoDatabase *databases.MongoDatabase) TodoRepository {
 	return &MongoTodoRepository{
 		collection: mongoDatabase.GetDatabase().Collection("todos"),
 	}

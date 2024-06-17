@@ -5,6 +5,7 @@ import (
 	"log"
 	"time"
 
+	"github.com/ferhateroglu/go-fiber/internal/configs"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
 	"go.mongodb.org/mongo-driver/v2/mongo/readpref"
@@ -15,8 +16,8 @@ type MongoDatabase struct {
 	DB     *mongo.Database
 }
 
-func NewMongoDatabase() (*MongoDatabase, error) {
-	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
+func NewMongoDatabase(cfg *configs.Config) (*MongoDatabase, error) {
+	clientOptions := options.Client().ApplyURI(cfg.Database.MongoURI)
 
 	client, err := mongo.Connect(clientOptions)
 	if err != nil {
@@ -29,11 +30,11 @@ func NewMongoDatabase() (*MongoDatabase, error) {
 	err = client.Ping(ctx, readpref.Primary())
 	if err != nil {
 		log.Printf("Cannot ping to MongoDB: %v", err)
-		client.Disconnect(ctx) // Bağlantıyı kapat
+		client.Disconnect(ctx)
 		return nil, err
 	}
 
-	db := client.Database("go_fiber")
+	db := client.Database(cfg.Database.MongoDBName)
 
 	return &MongoDatabase{
 		Client: client,

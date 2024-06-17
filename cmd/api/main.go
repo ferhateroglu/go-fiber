@@ -12,5 +12,5 @@ func main() {
 		log.Fatalf("Failed to create app: %v", err)
 	}
 
-	log.Fatal(application.Start(":3000"))
+	log.Fatal(application.Start())
 }
