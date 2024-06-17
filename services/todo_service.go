@@ -29,24 +29,51 @@ func (s *todoService) CreateTodo(todo *models.Todo) error {
 	if todo.Title == "" {
 		return errors.New("title is required")
 	}
-	return s.repo.Create(todo)
+
+	err := s.repo.Create(todo)
+	if err != nil {
+		return errors.New("failed to create todo")
+	}
+
+	return nil
 }
 
 func (s *todoService) GetAllTodos() ([]models.Todo, error) {
-	return s.repo.GetAll()
+	todos, err := s.repo.GetAll()
+	if err != nil {
+		return nil, errors.New("failed to fetch todos")
+	}
+
+	return todos, nil
 }
 
 func (s *todoService) GetTodoById(id string) (*models.Todo, error) {
-	return s.repo.GetById(id)
+	todo, err := s.repo.GetById(id)
+	if err != nil {
+		return nil, errors.New("failed to fetch todo")
+	}
+
+	return todo, nil
 }
 
 func (s *todoService) UpdateTodo(id string, todo *models.Todo) error {
 	if todo.Title == "" {
 		return errors.New("title is required")
 	}
-	return s.repo.Update(id, todo)
+
+	err := s.repo.Update(id, todo)
+	if err != nil {
+		return errors.New("failed to update todo")
+	}
+
+	return nil
 }
 
 func (s *todoService) DeleteTodo(id string) error {
-	return s.repo.Delete(id)
+	err := s.repo.Delete(id)
+	if err != nil {
+		return errors.New("failed to delete todo")
+	}
+
+	return nil
 }
