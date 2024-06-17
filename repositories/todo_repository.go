@@ -5,6 +5,7 @@ import (
 	"errors"
 	"time"
 
+	"github.com/ferhateroglu/go-fiber/databases"
 	"github.com/ferhateroglu/go-fiber/models"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/v2/bson"
@@ -23,12 +24,11 @@ type MongoTodoRepository struct {
 	collection *mongo.Collection
 }
 
-func NewMongoTodoRepository(db *mongo.Database) TodoRepository {
+func NewMongoTodoRepository(mongoDatabase *databases.MongoDatabase) TodoRepository {
 	return &MongoTodoRepository{
-		collection: db.Collection("todos"),
+		collection: mongoDatabase.GetDatabase().Collection("todos"),
 	}
 }
-
 func (r *MongoTodoRepository) Create(todo *models.Todo) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
