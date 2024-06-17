@@ -23,10 +23,7 @@ func New() (*App, error) {
 		container: container,
 	}
 
-	err := container.Invoke(func(cfg *configs.Config) {
-		app.config = cfg
-	})
-	if err != nil {
+	if err := app.loadConfig(); err != nil {
 		return nil, err
 	}
 
@@ -36,6 +33,12 @@ func New() (*App, error) {
 	}
 
 	return app, nil
+}
+
+func (a *App) loadConfig() error {
+	return a.container.Invoke(func(cfg *configs.Config) {
+		a.config = cfg
+	})
 }
 
 func (a *App) setupMiddlewares() {
