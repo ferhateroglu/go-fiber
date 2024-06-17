@@ -11,12 +11,17 @@ import (
 	"go.mongodb.org/mongo-driver/v2/mongo/readpref"
 )
 
+type Database interface {
+	GetDatabase() *mongo.Database
+	Close(ctx context.Context) error
+}
+
 type MongoDatabase struct {
 	Client *mongo.Client
 	DB     *mongo.Database
 }
 
-func NewMongoDatabase(cfg *configs.Config) (*MongoDatabase, error) {
+func NewMongoDatabase(cfg *configs.Config) (Database, error) {
 	clientOptions := options.Client().ApplyURI(cfg.Database.MongoURI)
 
 	client, err := mongo.Connect(clientOptions)

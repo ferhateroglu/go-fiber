@@ -20,17 +20,17 @@ type TodoRepository interface {
 	Delete(id string) error
 }
 
-type MongoTodoRepository struct {
+type mongoTodoRepository struct {
 	collection *mongo.Collection
 }
 
-func NewTodoRepository(mongoDatabase *databases.MongoDatabase) TodoRepository {
-	return &MongoTodoRepository{
+func NewTodoRepository(mongoDatabase databases.Database) TodoRepository {
+	return &mongoTodoRepository{
 		collection: mongoDatabase.GetDatabase().Collection("todos"),
 	}
 }
 
-func (r *MongoTodoRepository) Create(todo *models.Todo) error {
+func (r *mongoTodoRepository) Create(todo *models.Todo) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -44,7 +44,7 @@ func (r *MongoTodoRepository) Create(todo *models.Todo) error {
 	return nil
 }
 
-func (r *MongoTodoRepository) GetAll() ([]models.Todo, error) {
+func (r *mongoTodoRepository) GetAll() ([]models.Todo, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -62,7 +62,7 @@ func (r *MongoTodoRepository) GetAll() ([]models.Todo, error) {
 	return todos, nil
 }
 
-func (r *MongoTodoRepository) GetById(id string) (*models.Todo, error) {
+func (r *mongoTodoRepository) GetById(id string) (*models.Todo, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -83,7 +83,7 @@ func (r *MongoTodoRepository) GetById(id string) (*models.Todo, error) {
 	return &todo, nil
 }
 
-func (r *MongoTodoRepository) Update(id string, todo *models.Todo) error {
+func (r *mongoTodoRepository) Update(id string, todo *models.Todo) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -111,7 +111,7 @@ func (r *MongoTodoRepository) Update(id string, todo *models.Todo) error {
 	return nil
 }
 
-func (r *MongoTodoRepository) Delete(id string) error {
+func (r *mongoTodoRepository) Delete(id string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 

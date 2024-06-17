@@ -6,17 +6,25 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-type TodoHandler struct {
+type TodoHandler interface {
+	Create(ctx *fiber.Ctx) error
+	GetAll(ctx *fiber.Ctx) error
+	GetByID(ctx *fiber.Ctx) error
+	Update(ctx *fiber.Ctx) error
+	Delete(ctx *fiber.Ctx) error
+}
+
+type todoHandler struct {
 	todoService services.TodoService
 }
 
-func NewTodoHandler(todoService services.TodoService) *TodoHandler {
-	return &TodoHandler{
+func NewTodoHandler(todoService services.TodoService) TodoHandler {
+	return &todoHandler{
 		todoService: todoService,
 	}
 }
 
-func (c *TodoHandler) CreateTodo(ctx *fiber.Ctx) error {
+func (c *todoHandler) Create(ctx *fiber.Ctx) error {
 	todo := new(models.Todo)
 	if err := ctx.BodyParser(todo); err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid request body"})
@@ -29,7 +37,7 @@ func (c *TodoHandler) CreateTodo(ctx *fiber.Ctx) error {
 	return ctx.Status(fiber.StatusCreated).JSON(todo)
 }
 
-func (c *TodoHandler) GetAllTodos(ctx *fiber.Ctx) error {
+func (c *todoHandler) GetAll(ctx *fiber.Ctx) error {
 	todos, err := c.todoService.GetAllTodos()
 	if err != nil {
 		return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
@@ -38,7 +46,7 @@ func (c *TodoHandler) GetAllTodos(ctx *fiber.Ctx) error {
 	return ctx.JSON(todos)
 }
 
-func (c *TodoHandler) GetTodoById(ctx *fiber.Ctx) error {
+func (c *todoHandler) GetByID(ctx *fiber.Ctx) error {
 	id := ctx.Params("id")
 	todo, err := c.todoService.GetTodoById(id)
 	if err != nil {
@@ -48,7 +56,7 @@ func (c *TodoHandler) GetTodoById(ctx *fiber.Ctx) error {
 	return ctx.JSON(todo)
 }
 
-func (c *TodoHandler) UpdateTodo(ctx *fiber.Ctx) error {
+func (c *todoHandler) Update(ctx *fiber.Ctx) error {
 	id := ctx.Params("id")
 	todo := new(models.Todo)
 	if err := ctx.BodyParser(todo); err != nil {
@@ -62,7 +70,7 @@ func (c *TodoHandler) UpdateTodo(ctx *fiber.Ctx) error {
 	return ctx.JSON(todo)
 }
 
-func (c *TodoHandler) DeleteTodo(ctx *fiber.Ctx) error {
+func (c *todoHandler) Delete(ctx *fiber.Ctx) error {
 	id := ctx.Params("id")
 	if err := c.todoService.DeleteTodo(id); err != nil {
 		return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
