@@ -14,10 +14,6 @@ type TodoRequest struct {
 	Content string `json:"content" validate:"max=500"`
 }
 
-type GetTodoRequest struct {
-	Id int `json:"id" validate:"required,min=1"`
-}
-
 type UpdateTodoRequest struct {
 	Id      int    `json:"id" validate:"required,min=1"`
 	Title   string `json:"title" validate:"required,min=3,max=100"`

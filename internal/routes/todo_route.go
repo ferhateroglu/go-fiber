@@ -25,7 +25,7 @@ func (tr *todoRouter) SetupRoutes(app *fiber.App) {
 
 	todoGroup.Get("/", tr.todoHandler.GetAll)
 	todoGroup.Post("/", middlewares.ValidateRequest(middlewares.TodoRequest{}), tr.todoHandler.Create)
-	todoGroup.Get("/:id", middlewares.ValidateRequest(middlewares.GetTodoRequest{}), tr.todoHandler.GetByID)
+	todoGroup.Get("/:id", tr.todoHandler.GetByID)
 	todoGroup.Put("/:id", middlewares.ValidateRequest(middlewares.UpdateTodoRequest{}), tr.todoHandler.Update)
 	todoGroup.Delete("/:id", middlewares.ValidateRequest(middlewares.DeleteTodoRequest{}), tr.todoHandler.Delete)
 }
