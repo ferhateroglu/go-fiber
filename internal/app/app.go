@@ -15,8 +15,8 @@ type App struct {
 	config    *configs.Config
 }
 
-func New() (*App, error) {
-	container := di.BuildContainer()
+func NewApp() (*App, error) {
+	container := di.BuildToDoContainer()
 
 	app := &App{
 		fiber:     fiber.New(),

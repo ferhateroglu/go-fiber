@@ -1,4 +1,4 @@
-package controllers
+package handlers
 
 import (
 	"github.com/ferhateroglu/go-fiber/internal/models"

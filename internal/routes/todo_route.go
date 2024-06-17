@@ -1,16 +1,16 @@
 package routes
 
 import (
-	"github.com/ferhateroglu/go-fiber/internal/controllers"
+	"github.com/ferhateroglu/go-fiber/internal/handlers"
 	"github.com/ferhateroglu/go-fiber/internal/middlewares"
 	"github.com/gofiber/fiber/v2"
 )
 
 type TodoRouter struct {
-	todoController *controllers.TodoController
+	todoController *handlers.TodoController
 }
 
-func NewTodoRouter(todoController *controllers.TodoController) *TodoRouter {
+func NewTodoRouter(todoController *handlers.TodoController) *TodoRouter {
 	return &TodoRouter{
 		todoController: todoController,
 	}
