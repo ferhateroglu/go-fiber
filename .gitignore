@@ -1,0 +1,42 @@
+# Binaries
+*.exe
+*.dll
+*.so
+*.dylib
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Go build files
+*.out
+
+# Logs
+*.log
+logs/
+
+# Dependency directories
+vendor/
+
+# Go modules
+go.sum
+go.mod
+
+# Environment variables
+.env
+
+# IDE / Editor specific
+.idea/
+.vscode/
+*.swp
+
+# Test results
+*.cover
+*.test
+
+# Docker
+docker-compose.override.yml
+.dockerignore
+
+# Fiber specific
+fiber.lock
