@@ -57,17 +57,16 @@ This project follows the guidelines outlined in [Effective Go](https://go.dev/do
 ## Getting Started
 
 
-1. Install Go and set up your workspace.
+Install Go and set up your workspace.
    ```
    git clone https://github.com/ferhateroglu/go-fiber.git
    cd go-fiber
    go mod tidy
    ```
 
-<!-- 2. Set up your MongoDB connection in `.env`. -->
-2. Set up environment variables in `.env` file.
+Set up environment variables in `.env` file.
 
-5. Run the application:
+Run the application:
    ```
    make run
    ```
